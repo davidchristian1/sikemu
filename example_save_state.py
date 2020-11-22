@@ -26,12 +26,12 @@ try:
     # Required input parameters are only 'dout_pin' and 'pd_sck_pin'
     hx = HX711(dout_pin=5, pd_sck_pin=6)
     # Check if we have swap file. If yes that suggest that the program was not
-    # terminated proprly (power failure). We load the latest state.
+    # terminated proprly (power failure). Load the latest state.
     swap_file_name = 'swap_file.swp'
     if os.path.isfile(swap_file_name):
         with open(swap_file_name, 'rb') as swap_file:
             hx = pickle.load(swap_file)
-            # now we loaded the state before the Pi restarted.
+            # Load the state before the Pi restarted.
     else:
         # measure tare and save the value as offset for current channel
         # and gain selected. That means channel A and gain 128
@@ -75,21 +75,15 @@ try:
                 'Cannot calculate mean value. Try debug mode. Variable reading:',
                 reading)
 
-        # This is how you can save the ratio and offset in order to load it later.
         # If Raspberry Pi unexpectedly powers down, load the settings.
         print('Saving the HX711 state to swap file on persistant memory')
         with open(swap_file_name, 'wb') as swap_file:
             pickle.dump(hx, swap_file)
             swap_file.flush()
             os.fsync(swap_file.fileno())
-            # you have to flush, fsynch and close the file all the time.
+            # flush, fsynch and close the file all the time.
             # This will write the file to the drive. It is slow but safe.
-
-    # Read data several times and return mean value
-    # subtracted by offset and converted by scale ratio to
-    # desired units. In my case in grams.
-    print("Now, I will read data in infinite loop. To exit press 'CTRL + C'")
-     # input('Press Enter to begin reading')
+   
     while True:
         sleep(0)
         if ldr.value > 0.3 or ldr2.value > 0.3:
@@ -118,7 +112,7 @@ try:
 
 
 except (KeyboardInterrupt, SystemExit):
-    print('Bye :)')
+    print('Exiting..')
 
 finally:
     GPIO.cleanup()
