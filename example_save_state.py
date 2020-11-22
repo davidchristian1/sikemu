@@ -13,10 +13,12 @@ from time import sleep
 ldr = LightSensor(4)
 ldr2 = LightSensor(17)
 # setup firebase
-cred = credentials.Certificate('sikemu-uc-firebase-adminsdk-q5azz-7ff8439a75.json')
+cred = credentials.Certificate('your firebase certificate')
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://sikemu-uc.firebaseio.com/'
+    'databaseURL': 'your firebase URL'
 })
+
+#modify according to your firebase structure
 ref = db.reference('barang')
 barang_ref = ref.child('barang_001')
 
@@ -25,7 +27,7 @@ try:
     # Create an object hx which represents your real hx711 chip
     # Required input parameters are only 'dout_pin' and 'pd_sck_pin'
     hx = HX711(dout_pin=5, pd_sck_pin=6)
-    # Check if we have swap file. If yes that suggest that the program was not
+    # Check if have swap file. If yes that suggest that the program was not
     # terminated proprly (power failure). Load the latest state.
     swap_file_name = 'swap_file.swp'
     if os.path.isfile(swap_file_name):
